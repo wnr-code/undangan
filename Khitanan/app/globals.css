@@ -1,18 +1,192 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Amiri:wght@400;700&display=swap');
 @import "tailwindcss";
 
-:root { --ink:#17271f; --green:#173b2d; --green2:#254b3b; --gold:#c7a56a; --cream:#f5f0e6; --paper:#fbf9f4; }
-* { box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body { margin:0; background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; }
-.font-display { font-family:'Playfair Display',serif; }
-.gold-line { height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-.pattern { background-image: radial-gradient(rgba(199,165,106,.17) .8px,transparent .8px); background-size:13px 13px; }
-.hero-bg { background:linear-gradient(135deg,rgba(13,39,29,.96),rgba(26,67,50,.88)), radial-gradient(circle at 80% 20%,rgba(199,165,106,.24),transparent 35%); }
-.arch { border:1px solid rgba(199,165,106,.55); border-radius:48% 48% 8px 8px / 28% 28% 8px 8px; }
-.gold-text { color:var(--gold); }
-.btn-gold { background:linear-gradient(135deg,#d7bd8c,#b48c50); color:#17271f; transition:transform .2s,filter .2s; }
-.btn-gold:hover { transform:translateY(-2px); filter:brightness(1.05); }
-.section-kicker { letter-spacing:.28em; text-transform:uppercase; font-size:10px; color:#a7834d; font-weight:700; }
-.input { width:100%; border:1px solid #ded7c8; border-radius:12px; padding:12px 14px; background:#fffdf8; outline:none; }
-.input:focus { border-color:#b48c50; box-shadow:0 0 0 3px rgba(180,140,80,.12); }
+:root {
+  --ink: #141f18;
+  --green: #0c2b20;
+  --green-deep: #071a13;
+  --green2: #143d30;
+  --green3: #1e4d3c;
+  --gold: #c9a15a;
+  --gold-bright: #e6c97e;
+  --gold-soft: #d9b978;
+  --cream: #f6f1e6;
+  --paper: #faf7ef;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ---------- Base ---------- */
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: rgba(201, 161, 90, .35); color: #122018; }
+
+/* ---------- Typographic helpers ---------- */
+.font-display { font-family: 'Playfair Display', serif; }
+.font-accent  { font-family: 'Cormorant Garamond', serif; }
+.font-arabic  { font-family: 'Amiri', serif; direction: rtl; }
+
+/* ---------- Ornamentos & pola ---------- */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+}
+
+.islamic-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23c9a15a' stroke-opacity='0.16' stroke-width='1.1'%3E%3Crect x='14' y='14' width='28' height='28' rx='2'/%3E%3Crect x='14' y='14' width='28' height='28' rx='2' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='3' fill='%23c9a15a' fill-opacity='0.10' stroke='none'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+.islamic-pattern-subtle {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23c9a15a' stroke-opacity='0.10' stroke-width='1'%3E%3Crect x='14' y='14' width='28' height='28' rx='2'/%3E%3Crect x='14' y='14' width='28' height='28' rx='2' transform='rotate(45 28 28)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+.hero-bg {
+  background:
+    radial-gradient(ellipse 60% 45% at 78% 12%, rgba(201, 161, 90, .22), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 15% 85%, rgba(30, 77, 60, .55), transparent 70%),
+    linear-gradient(160deg, #0b241a 0%, #0f3125 55%, #1a4031 100%);
+}
+
+.card-dark {
+  background: linear-gradient(150deg, rgba(201, 161, 90, .07), rgba(13, 41, 31, .55));
+  border: 1px solid rgba(201, 161, 90, .22);
+}
+
+.arch {
+  border: 1.5px solid rgba(201, 161, 90, .55);
+  border-radius: 999px 999px 14px 14px;
+  box-shadow: inset 0 0 0 6px rgba(201, 161, 90, .05);
+}
+
+.btn-gold {
+  position: relative;
+  background: linear-gradient(135deg, #e3c584, #c9a15a 60%, #a87f3e);
+  color: #1c1509;
+  box-shadow: 0 8px 30px rgba(201, 161, 90, .32);
+  transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s, filter .35s;
+}
+.btn-gold:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.07);
+  box-shadow: 0 14px 40px rgba(201, 161, 90, .45);
+}
+
+.btn-outline-gold {
+  border: 1px solid rgba(201, 161, 90, .5);
+  color: var(--gold-soft);
+  transition: all .3s;
+}
+.btn-outline-gold:hover {
+  background: rgba(201, 161, 90, .12);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+}
+
+.section-kicker {
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: #a7834d;
+  font-weight: 700;
+}
+.section-kicker-light {
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--gold-soft);
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #e0d8c6;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fffdf8;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.input:focus {
+  border-color: #c9a15a;
+  box-shadow: 0 0 0 3px rgba(201, 161, 90, .18);
+}
+
+/* ---------- Ornamental divider (dikenal sebagai "medallion") ---------- */
+.ornament-line {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.ornament-line::before,
+.ornament-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 161, 90, .6), transparent);
+}
+
+/* ---------- Glass / card utilities ---------- */
+.glass-light {
+  background: rgba(255, 253, 248, .82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(201, 161, 90, .22);
+  box-shadow: 0 24px 60px rgba(20, 41, 31, .14);
+}
+
+.glass-dark {
+  background: linear-gradient(150deg, rgba(14, 45, 33, .85), rgba(8, 26, 19, .92));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 161, 90, .25);
+}
+
+/* ---------- Keyframe animations ---------- */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.gold-shimmer {
+  background: linear-gradient(110deg, #d9b978 20%, #fff2cf 50%, #d9b978 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 4.5s linear infinite;
+}
+
+@keyframes softPulse {
+  0%, 100% { opacity: .35; transform: scale(1); }
+  50% { opacity: .85; transform: scale(1.06); }
+}
+.animate-soft-pulse { animation: softPulse 3.2s ease-in-out infinite; }
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.animate-float-slow { animation: floatSlow 6s ease-in-out infinite; }
+
+@keyframes spinMedallion {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-medallion { animation: spinMedallion 40s linear infinite; }
+
+/* ---------- Scrollbar (halus) ---------- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #efe9dc; }
+::-webkit-scrollbar-thumb { background: #c9a15a; border-radius: 8px; border: 2px solid #efe9dc; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
