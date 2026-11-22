@@ -23,10 +23,10 @@ const ADDRESS_DETAIL = "RT 01 / RW 04";
 const BISMILLAH = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
 
 const photos = [
-  { src: "/images/galeri-1.jpg", caption: "Momen khidmat yang indah" },
-  { src: "/images/galeri-2.jpg", caption: "Cahaya harapan yang hangat" },
-  { src: "/images/galeri-3.jpg", caption: "Semoga keberkahannya mengalir" },
+  { src: "/images/faariz-1.jpg", caption: "Ananda Faariz" },
+  { src: "/images/faariz-2.jpg", caption: "Kenangan 21 Agustus 2024" },
 ];
+const HERO_PHOTO = "/images/faariz-1.jpg";
 
 /* ============ helpers (deterministik agar SSR aman) ============ */
 function seeded(i: number) { const x = Math.sin(i * 9999.141) * 10000; return x - Math.floor(x); }
@@ -343,9 +343,11 @@ export default function Home() {
                 transition={{ delay: 2.15, duration: 0.95 }}
               >
                 <ArchFrame size={210} className="mx-auto drop-shadow-xl" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center pt-2 pointer-events-none">
-                  <Moon className="w-9 h-9 mb-1 opacity-90" />
-                  <span className="font-display text-5xl leading-none text-[#3a2a0e] tracking-tight" aria-hidden="true">م</span>
+                <div
+                  className="absolute overflow-hidden"
+                  style={{ left: "17%", right: "17%", top: "2.5%", bottom: "5.6%", borderRadius: "70px 70px 0 0" }}
+                >
+                  <img src={HERO_PHOTO} alt="Ananda Faariz" className="h-full w-full object-cover object-[50%_18%]" />
                 </div>
               </motion.div>
 
@@ -435,8 +437,11 @@ export default function Home() {
 
               <motion.div variants={fadeUp} className="relative mx-auto my-7 max-w-[140px] aspect-[4/5]">
                 <ArchFrame size={140} className="mx-auto drop-shadow-xl" />
-                <div className="absolute inset-0 flex items-center justify-center pt-1 pointer-events-none">
-                  <Moon className="w-7 h-7 opacity-90" />
+                <div
+                  className="absolute overflow-hidden"
+                  style={{ left: "17%", right: "17%", top: "2.5%", bottom: "5.6%", borderRadius: "47px 47px 0 0" }}
+                >
+                  <img src={HERO_PHOTO} alt="Ananda Faariz" className="h-full w-full object-cover object-[50%_18%]" />
                 </div>
               </motion.div>
 
@@ -522,7 +527,7 @@ export default function Home() {
               <p className="text-sm text-[#6b5a3e] mt-3 font-medium">Sebuah potret kecil penuh kenangan.</p>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-7">
+            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-7 max-w-2xl mx-auto">
               {photos.map((p, i) => (
                 <motion.figure
                   key={p.src}
@@ -536,7 +541,7 @@ export default function Home() {
                   <div className="arcade-arch relative overflow-hidden shadow-xl shadow-stone-300/50">
                     <img
                       src={p.src}
-                      alt={`Galeri keluarga ${i + 1}`}
+                      alt={p.caption}
                       className="w-full h-72 object-cover transition-transform duration-[1.1s] ease-out group-hover:scale-110"
                       loading="lazy"
                     />
@@ -551,7 +556,7 @@ export default function Home() {
               ))}
             </motion.div>
             <motion.p variants={fadeUp} className="text-center text-[10px] text-[#a5823f] mt-6">
-              Ganti foto contoh dengan foto keluarga sendiri.
+              Kenangan bersama Ananda Faariz.
             </motion.p>
           </motion.section>
 
