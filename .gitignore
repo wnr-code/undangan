@@ -1,0 +1,14 @@
+# Ketergantungan & build
+node_modules/
+.next/
+out/
+dist/
+
+# Lingkungan lokal & rahasia
+.env
+.env.local
+.env.*.local
+
+# Log & cache
+*.log
+.DS_Store

@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root { --ink:#17271f; --green:#173b2d; --green2:#254b3b; --gold:#c7a56a; --cream:#f5f0e6; --paper:#fbf9f4; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:'DM Sans',sans-serif; }
+.font-display { font-family:'Playfair Display',serif; }
+.gold-line { height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.pattern { background-image: radial-gradient(rgba(199,165,106,.17) .8px,transparent .8px); background-size:13px 13px; }
+.hero-bg { background:linear-gradient(135deg,rgba(13,39,29,.96),rgba(26,67,50,.88)), radial-gradient(circle at 80% 20%,rgba(199,165,106,.24),transparent 35%); }
+.arch { border:1px solid rgba(199,165,106,.55); border-radius:48% 48% 8px 8px / 28% 28% 8px 8px; }
+.gold-text { color:var(--gold); }
+.btn-gold { background:linear-gradient(135deg,#d7bd8c,#b48c50); color:#17271f; transition:transform .2s,filter .2s; }
+.btn-gold:hover { transform:translateY(-2px); filter:brightness(1.05); }
+.section-kicker { letter-spacing:.28em; text-transform:uppercase; font-size:10px; color:#a7834d; font-weight:700; }
+.input { width:100%; border:1px solid #ded7c8; border-radius:12px; padding:12px 14px; background:#fffdf8; outline:none; }
+.input:focus { border-color:#b48c50; box-shadow:0 0 0 3px rgba(180,140,80,.12); }
