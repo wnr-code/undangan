@@ -123,26 +123,36 @@ function ArchFrame({ size = 190, className = "" }: { size?: number; className?: 
       transition={{ duration: 0.8 }}
       aria-hidden="true"
     >
+      {/* outer gold ring */}
       <motion.path
-        d="M 34 236 L 34 78 C 34 28 66 8 100 8 C 134 8 166 28 166 78 L 166 236"
-        fill="none"
+        d="M 28 234 L 28 74 C 28 24 64 4 100 4 C 136 4 172 24 172 74 L 172 234"
+        fill="rgba(224, 169, 78, .12)"
         stroke="#f0c66c"
-        strokeWidth="3"
+        strokeWidth="5"
         strokeLinecap="round"
         initial={{ pathLength: 0, opacity: 0.25 }}
         animate={{ pathLength: 1, opacity: 1 }}
         transition={{ duration: 1.6, ease: "easeInOut", delay: 0.35 }}
       />
+      {/* inner gold ring */}
       <motion.path
-        d="M 47 236 L 47 82 C 47 40 70 22 100 22 C 130 22 153 40 153 82 L 153 236"
+        d="M 44 234 L 44 78 C 44 32 70 18 100 18 C 130 18 156 32 156 78 L 156 234"
         fill="none"
         stroke="#dfa63c"
-        strokeWidth="1.6"
-        strokeOpacity=".5"
+        strokeWidth="2.2"
+        strokeOpacity=".8"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.7 }}
+        animate={{ pathLength: 1, opacity: 0.8 }}
         transition={{ duration: 1.9, ease: "easeInOut", delay: 0.85 }}
       />
+      {/* 8-point star crest on the arch peak */}
+      <g transform="translate(100 12)">
+        <rect x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="#e0a94e" transform="rotate(45)" />
+        <rect x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="#e0a94e" opacity="0.6" />
+        <circle r="2.4" fill="#fffbf1" />
+      </g>
+      {/* base plinth line */}
+      <line x1="22" y1="240" x2="178" y2="240" stroke="#e0a94e" strokeWidth="4" strokeLinecap="round" />
     </motion.svg>
   );
 }
@@ -336,6 +346,7 @@ export default function Home() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, y: -40, filter: "blur(6px)", transition: { duration: 0.8 } }}
           >
+            <div className="absolute inset-0 pattern-stars" aria-hidden="true" />
             {/* balloons */}
             <div className="absolute left-[6%] top-[8%] opacity-95"><Balloon color="#f6c66c" size={62} /></div>
             <div className="absolute right-[8%] top-[6%] opacity-95"><Balloon color="#8fd0da" size={56} className="!animate-balloon [animation-delay:-2.2s]" /></div>
@@ -369,7 +380,7 @@ export default function Home() {
                 <ArchFrame size={210} className="mx-auto drop-shadow-xl" />
                 <div
                   className="absolute overflow-hidden"
-                  style={{ left: "17%", right: "17%", top: "2.5%", bottom: "5.6%", borderRadius: "70px 70px 0 0" }}
+                  style={{ left: "22%", right: "22%", top: "10%", bottom: "9%", borderRadius: "56px 56px 0 0" }}
                 >
                   <img src={HERO_PHOTO} alt="Ananda Faariz" loading="eager" fetchPriority="high" className="h-full w-full object-cover object-[50%_18%]" />
                 </div>
@@ -421,7 +432,7 @@ export default function Home() {
           {/* header */}
           <header className="sticky top-0 z-40 bg-[#fff8ec]/90 backdrop-blur-lg border-b border-[#f0c66c]/40 text-[#233025]">
             <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
-              <a href="#home" className="font-display text-lg tracking-wide text-[#2a5c48]">Faariz <span className="font-accent italic text-[#c17e2a]">Al-khowarizmi</span></a>
+              <a href="#home" className="flex items-center gap-2 font-display text-lg tracking-wide text-[#2a5c48]"><Star8 size={20} color="#e0a94e" /> Faariz <span className="font-accent italic text-[#c17e2a]">Al-khowarizmi</span></a>
               <button
                 aria-label="Musik"
                 aria-pressed={music}
@@ -436,6 +447,7 @@ export default function Home() {
 
           {/* hero setelah buka */}
           <section id="home" className="sky-gradient text-center relative scroll-mt-20 overflow-hidden">
+            <div className="absolute inset-0 pattern-stars opacity-70" aria-hidden="true" />
             <Dust count={12} />
             <div className="absolute -top-16 right-[8%] opacity-80"><Moon className="w-28 h-28 animate-float-slow" /></div>
             <div className="absolute -bottom-6 left-[6%] opacity-90"><Balloon color="#f2d4a0" size={48} /></div>
@@ -447,7 +459,7 @@ export default function Home() {
                 <ArchFrame size={140} className="mx-auto drop-shadow-xl" />
                 <div
                   className="absolute overflow-hidden"
-                  style={{ left: "17%", right: "17%", top: "2.5%", bottom: "5.6%", borderRadius: "47px 47px 0 0" }}
+                  style={{ left: "22%", right: "22%", top: "10%", bottom: "9%", borderRadius: "38px 38px 0 0" }}
                 >
                   <img src={HERO_PHOTO} alt="Ananda Faariz" loading="eager" fetchPriority="high" className="h-full w-full object-cover object-[50%_18%]" />
                 </div>
@@ -490,6 +502,7 @@ export default function Home() {
           <motion.section id="acara" className="px-5 py-20 relative scroll-mt-16" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }} variants={stagger}>
             <div className="max-w-3xl mx-auto">
               <motion.div variants={fadeUp} className="relative soft-panel p-8 sm:p-10 overflow-hidden">
+                <div className="absolute inset-0 pattern-stars opacity-45" aria-hidden="true" />
                 <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-[#f0c66c]/40 blur-3xl pointer-events-none" />
                 <div className="absolute -bottom-20 -left-20 w-52 h-52 rounded-full bg-[#8fd0da]/40 blur-3xl pointer-events-none" />
                 <div className="relative">
@@ -546,6 +559,9 @@ export default function Home() {
                   transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
                   whileHover={{ y: -8, rotate: i % 2 === 0 ? -1.5 : 1.5 }}
                 >
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 drop-shadow-md" aria-hidden="true">
+                    <Star8 size={26} color="#e0a94e" />
+                  </div>
                   <div className="arcade-arch relative overflow-hidden shadow-xl shadow-stone-300/50">
                     <img
                       src={p.src}
@@ -660,6 +676,7 @@ export default function Home() {
 
           {/* footer */}
           <footer className="px-5 pt-10 pb-28 text-center relative overflow-hidden bg-[#2a5c48] text-[#f6f1e2]">
+            <div className="absolute inset-0 pattern-stars-gold" aria-hidden="true" />
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#f6c66c]/20 blur-3xl pointer-events-none" />
             <div className="relative">
               <p className="font-arabic text-sm text-[#f0c66c]/90 mb-2">{BISMILLAH}</p>
