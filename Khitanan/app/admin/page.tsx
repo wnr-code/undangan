@@ -40,22 +40,21 @@ export default function AdminPage() {
 
   if (!authorized) {
     return (
-      <main className="min-h-screen hero-bg flex items-center justify-center p-5 relative overflow-hidden">
-        <div className="absolute inset-0 islamic-pattern-subtle opacity-70" />
+      <main className="min-h-screen sky-gradient flex items-center justify-center p-5 relative overflow-hidden">
         <motion.form
           onSubmit={login}
-          className="relative glass-light rounded-3xl p-8 w-full max-w-sm"
+          className="soft-panel relative w-full max-w-sm p-8"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <span className="absolute top-5 right-5 text-[#b98e44]/40"><Sparkles size={22} /></span>
-          <LockKeyhole className="text-[#8f6a2f] mx-auto" size={30} />
-          <h1 className="font-display text-3xl text-center mt-4 text-[#182b21]">Admin Dashboard</h1>
-          <p className="text-center text-xs text-stone-500 mt-2">Masuk untuk mengelola konfirmasi tamu.</p>
+          <span className="absolute top-5 right-5 text-[#e0a94e]/40"><Sparkles size={22} /></span>
+          <LockKeyhole className="text-[#c17e2a] mx-auto" size={30} />
+          <h1 className="font-display font-semibold text-3xl text-center mt-4 text-[#233025]">Admin Dashboard</h1>
+          <p className="text-center text-xs text-[#6b5a3e] mt-2 font-medium">Masuk untuk mengelola konfirmasi tamu.</p>
           <input className="input mt-6" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password admin" />
           <button className="btn-gold w-full rounded-full py-3 mt-4 text-xs font-bold tracking-widest uppercase">MASUK</button>
-          <p className="text-[10px] text-stone-400 mt-4 text-center">Demo password: demo123. Ganti autentikasi sebelum produksi.</p>
+          <p className="text-[10px] text-[#8a6a2b] mt-4 text-center font-medium">Demo password: demo123. Ganti autentikasi sebelum produksi.</p>
         </motion.form>
       </main>
     );
@@ -64,12 +63,12 @@ export default function AdminPage() {
   const total = rows.reduce((n, r) => n + Number(r.guest_count || 1), 0);
 
   return (
-    <main className="min-h-screen bg-[#faf6ec] p-5 sm:p-10">
+    <main className="min-h-screen sky-gradient p-5 sm:p-10">
       <div className="max-w-6xl mx-auto">
         <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="section-kicker">Pengelolaan acara</p>
-            <h1 className="font-display text-4xl mt-2 text-[#182b21]">Dashboard RSVP</h1>
+            <p className="eyebrow">Pengelolaan acara</p>
+            <h1 className="font-display font-semibold text-4xl mt-2 text-[#233025]">Dashboard RSVP</h1>
           </div>
           <button onClick={exportCSV} className="btn-gold rounded-full px-5 py-3 text-xs font-bold flex gap-2 items-center uppercase tracking-widest">
             <Download size={15} /> Export CSV
@@ -82,30 +81,30 @@ export default function AdminPage() {
           <Stat icon={<MessageCircle size={20} />} label="Ucapan masuk" value={rows.filter((r) => r.message).length} delay={0.25} />
         </div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="glass-light rounded-3xl mt-8 overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} className="soft-panel mt-8 overflow-hidden">
           <div className="p-5 flex justify-between items-center">
-            <h2 className="font-display text-2xl text-[#182b21]">Daftar tamu</h2>
+            <h2 className="font-display font-semibold text-2xl text-[#233025]">Daftar tamu</h2>
             <button onClick={load} className="text-xs underline tracking-wider uppercase">{loading ? "Memuat..." : "Muat ulang"}</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-[#f1ead7] text-left text-xs">
+              <thead className="bg-[#f6ead0] text-left text-xs">
                 <tr>
                   <th className="p-4">Nama</th><th className="p-4">Kehadiran</th><th className="p-4">Jumlah</th><th className="p-4">Ucapan</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((r, i) => (
-                  <tr key={r.id ?? i} className="border-t border-stone-200/70 hover:bg-[#faf6ec] transition-colors">
-                    <td className="p-4 font-semibold text-[#182b21]">{r.name}</td>
-                    <td className="p-4 text-stone-600">{r.attendance}</td>
-                    <td className="p-4 text-stone-600">{r.guest_count}</td>
-                    <td className="p-4 min-w-48 text-stone-600">{r.message}</td>
+                  <tr key={r.id ?? i} className="border-t border-[#efe6d2] hover:bg-[#fffaf0] transition-colors">
+                    <td className="p-4 font-bold text-[#233025]">{r.name}</td>
+                    <td className="p-4 text-[#6b5a3e]">{r.attendance}</td>
+                    <td className="p-4 text-[#6b5a3e]">{r.guest_count}</td>
+                    <td className="p-4 min-w-48 text-[#6b5a3e]">{r.message}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            {!rows.length && <p className="p-8 text-center text-sm text-stone-400">Belum ada data RSVP atau Supabase belum dikonfigurasi.</p>}
+            {!rows.length && <p className="p-8 text-center text-sm text-[#8a6a2b] font-medium">Belum ada data RSVP atau Supabase belum dikonfigurasi.</p>}
           </div>
         </motion.div>
       </div>
@@ -119,11 +118,11 @@ function Stat({ icon, label, value, delay = 0 }: { icon: React.ReactNode; label:
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
-      className="glass-light rounded-3xl p-5"
+      className="soft-panel p-5"
     >
-      <div className="text-[#8f6a2f]">{icon}</div>
-      <p className="text-xs text-stone-500 mt-3">{label}</p>
-      <p className="font-display text-3xl mt-1 text-[#182b21]">{value}</p>
+      <div className="text-[#c17e2a]">{icon}</div>
+      <p className="text-xs text-[#8a6a2b] mt-3 font-bold">{label}</p>
+      <p className="font-display font-semibold text-3xl mt-1 text-[#233025]">{value}</p>
     </motion.div>
   );
 }
