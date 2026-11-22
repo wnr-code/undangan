@@ -35,18 +35,19 @@ function dustParticles(count: number) {
   return Array.from({ length: count }, (_, i) => ({
     x: seeded(i + 1) * 100,
     y: seeded(i + 101) * 100,
-    size: 3 + seeded(i + 201) * 5,
-    duration: 6 + seeded(i + 301) * 6,
+    size: 3 + seeded(i + 201) * 6,
+    duration: 6 + seeded(i + 301) * 7,
     delay: seeded(i + 401) * 4,
   }));
 }
+
 const fadeUp = {
   hidden: { opacity: 0, y: 42 },
   show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const } },
 };
 const stagger = { show: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } } };
 
-/* ============ decorations ============ */
+/* ============ ornaments ============ */
 function Star8({ size = 22, color = "#f0c66c", className = "" }: { size?: number; color?: string; className?: string }) {
   return (
     <svg viewBox="0 0 100 100" width={size} height={size} className={className} aria-hidden="true">
@@ -68,7 +69,7 @@ function Medallion({ size = 44, spin = true, className = "" }: { size?: number; 
         <rect x="28" y="28" width="44" height="44" rx="4" />
         <rect x="28" y="28" width="44" height="44" rx="4" transform="rotate(45 50 50)" />
       </g>
-      <circle cx="50" cy="50" r="7.5" fill="#fff8ec" />
+      <circle cx="50" cy="50" r="7.5" fill="#fffbf1" />
       <circle cx="50" cy="50" r="3.4" fill="#dfa63c" />
     </svg>
   );
@@ -101,7 +102,7 @@ function Dust({ count = 14 }: { count?: number }) {
           key={i}
           className="absolute"
           style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size }}
-          animate={{ y: [0, -26, 0], opacity: [0.2, 0.85, 0.2], scale: [0.7, 1.3, 0.7] }}
+          animate={{ y: [0, -26, 0], opacity: [0.2, 0.9, 0.2], scale: [0.7, 1.35, 0.7] }}
           transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
         >
           <Star8 size={p.size} color="#e9b85c" />
@@ -111,6 +112,7 @@ function Dust({ count = 14 }: { count?: number }) {
   );
 }
 
+/* ============ mihrab arch ============ */
 function ArchFrame({ size = 190, className = "" }: { size?: number; className?: string }) {
   return (
     <motion.svg
@@ -123,7 +125,6 @@ function ArchFrame({ size = 190, className = "" }: { size?: number; className?: 
       transition={{ duration: 0.8 }}
       aria-hidden="true"
     >
-      {/* outer gold ring */}
       <motion.path
         d="M 28 234 L 28 74 C 28 24 64 4 100 4 C 136 4 172 24 172 74 L 172 234"
         fill="rgba(224, 169, 78, .12)"
@@ -134,7 +135,6 @@ function ArchFrame({ size = 190, className = "" }: { size?: number; className?: 
         animate={{ pathLength: 1, opacity: 1 }}
         transition={{ duration: 1.6, ease: "easeInOut", delay: 0.35 }}
       />
-      {/* inner gold ring */}
       <motion.path
         d="M 44 234 L 44 78 C 44 32 70 18 100 18 C 130 18 156 32 156 78 L 156 234"
         fill="none"
@@ -145,18 +145,37 @@ function ArchFrame({ size = 190, className = "" }: { size?: number; className?: 
         animate={{ pathLength: 1, opacity: 0.8 }}
         transition={{ duration: 1.9, ease: "easeInOut", delay: 0.85 }}
       />
-      {/* 8-point star crest on the arch peak */}
       <g transform="translate(100 12)">
         <rect x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="#e0a94e" transform="rotate(45)" />
         <rect x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="#e0a94e" opacity="0.6" />
         <circle r="2.4" fill="#fffbf1" />
       </g>
-      {/* base plinth line */}
       <line x1="22" y1="240" x2="178" y2="240" stroke="#e0a94e" strokeWidth="4" strokeLinecap="round" />
     </motion.svg>
   );
 }
 
+function ArchPhoto({ size = 190 }: { size?: number }) {
+  return (
+    <div className="relative mx-auto" style={{ width: size, aspectRatio: "4 / 5" }}>
+      <ArchFrame size={size} className="mx-auto drop-shadow-xl" />
+      <div
+        className="absolute overflow-hidden"
+        style={{ left: "22%", right: "22%", top: "10%", bottom: "9%", borderRadius: `${size * 0.26}px ${size * 0.26}px 0 0` }}
+      >
+        <img
+          src={HERO_PHOTO}
+          alt="Ananda Faariz"
+          loading="eager"
+          fetchPriority="high"
+          className="h-full w-full object-cover object-[50%_18%]"
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ============ loader ============ */
 function Loader({ done }: { done: boolean }) {
   return (
     <AnimatePresence>
@@ -167,6 +186,7 @@ function Loader({ done }: { done: boolean }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.06, transition: { duration: 0.65, ease: "easeInOut" } }}
         >
+          <div className="absolute inset-0 pattern-stars opacity-60" aria-hidden="true" />
           <div className="absolute -top-16 left-1/2 -translate-x-1/2 opacity-25"><Moon className="w-40 h-40" /></div>
           <motion.div initial={{ opacity: 0, scale: 0.85, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.9, ease: "easeOut" }}>
             <Medallion size={78} />
@@ -182,7 +202,7 @@ function Loader({ done }: { done: boolean }) {
           <motion.div
             className="mt-5 h-px bg-gradient-to-r from-transparent via-[#dfa63c] to-transparent"
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 160, opacity: 1 }}
+            animate={{ width: 170, opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.85 }}
           />
           <motion.p
@@ -199,6 +219,7 @@ function Loader({ done }: { done: boolean }) {
   );
 }
 
+/* ============ countdown ============ */
 function Countdown() {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
@@ -206,10 +227,11 @@ function Countdown() {
     const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
+  const labels = ["Hari", "Jam", "Menit", "Detik"];
   if (now === null) {
     return (
       <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl mx-auto">
-        {["Hari", "Jam", "Menit", "Detik"].map((l) => (
+        {labels.map((l) => (
           <div key={l} className="soft-panel py-4 text-center min-w-0">
             <div className="font-display text-2xl sm:text-3xl text-[#233025]">—</div>
             <div className="mt-1 text-[9px] uppercase tracking-[.18em] text-[#a5823f] font-bold">{l}</div>
@@ -234,7 +256,7 @@ function Countdown() {
             initial={{ y: -14, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 320, damping: 24 }}
-            className="font-display text-2xl sm:text-3xl text-[#233025]"
+            className="font-display text-2xl sm:text-3xl gold-shimmer"
           >
             {String(value).padStart(2, "0")}
           </motion.div>
@@ -347,14 +369,12 @@ export default function Home() {
             exit={{ opacity: 0, y: -40, filter: "blur(6px)", transition: { duration: 0.8 } }}
           >
             <div className="absolute inset-0 pattern-stars" aria-hidden="true" />
-            {/* balloons */}
-            <div className="absolute left-[6%] top-[8%] opacity-95"><Balloon color="#f6c66c" size={62} /></div>
-            <div className="absolute right-[8%] top-[6%] opacity-95"><Balloon color="#8fd0da" size={56} className="!animate-balloon [animation-delay:-2.2s]" /></div>
-            <div className="absolute right-[15%] bottom-[9%] opacity-90"><Balloon color="#f2a988" size={46} className="!animate-balloon [animation-delay:-3.8s]" /></div>
-            <div className="absolute left-[12%] bottom-[10%] opacity-90"><Balloon color="#f2d4a0" size={50} className="!animate-balloon [animation-delay:-1.4s]" /></div>
-
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-40 pointer-events-none"><Moon className="w-40 h-40 animate-float-slow" /></div>
+            <div className="absolute left-[6%] top-[8%] opacity-95 pointer-events-none"><Balloon color="#f6c66c" size={62} /></div>
+            <div className="absolute right-[8%] top-[6%] opacity-95 pointer-events-none"><Balloon color="#8fd0da" size={56} className="!animate-balloon [animation-delay:-2.2s]" /></div>
+            <div className="absolute right-[15%] bottom-[9%] opacity-90 pointer-events-none"><Balloon color="#f2a988" size={46} className="!animate-balloon [animation-delay:-3.8s]" /></div>
+            <div className="absolute left-[12%] bottom-[10%] opacity-90 pointer-events-none"><Balloon color="#f2d4a0" size={50} className="!animate-balloon [animation-delay:-1.4s]" /></div>
             <Dust count={16} />
-            <Moon className="absolute top-[9%] left-1/2 -translate-x-1/2 w-24 h-24 opacity-70 animate-float-slow" />
 
             <motion.div
               className="relative z-10 max-w-xl w-full"
@@ -372,21 +392,15 @@ export default function Home() {
               </motion.p>
 
               <motion.div
-                className="relative mx-auto mt-6 max-w-[210px] aspect-[4/5]"
+                className="relative mx-auto mt-6 max-w-[210px]"
                 initial={{ opacity: 0, scale: 0.85, y: 24 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 2.15, duration: 0.95 }}
               >
-                <ArchFrame size={210} className="mx-auto drop-shadow-xl" />
-                <div
-                  className="absolute overflow-hidden"
-                  style={{ left: "22%", right: "22%", top: "10%", bottom: "9%", borderRadius: "56px 56px 0 0" }}
-                >
-                  <img src={HERO_PHOTO} alt="Ananda Faariz" loading="eager" fetchPriority="high" className="h-full w-full object-cover object-[50%_18%]" />
-                </div>
+                <ArchPhoto size={210} />
               </motion.div>
 
-              <p className="text-[10px] tracking-[.4em] uppercase text-[#8a6a2b] font-bold mt-4">Undangan Walimatul Khitan</p>
+              <p className="text-[10px] tracking-[.4em] uppercase text-[#8a6a2b] font-bold mt-5">Undangan Walimatul Khitan</p>
 
               <h1 className="font-display font-semibold text-[2.75rem] sm:text-6xl leading-[1.05] mt-3 text-[#233025]">
                 {NAME}<br /><span className="gold-shimmer">Al-khowarizmi</span>
@@ -403,13 +417,13 @@ export default function Home() {
                 {greeting}
               </motion.p>
 
-              <p className="mt-6 text-xs sm:text-sm text-[#6b5a3e] leading-7 font-medium">
+              <p className="mt-6 text-xs sm:text-sm leading-7 text-[#6b5a3e] font-medium">
                 Dengan memohon rahmat dan ridha Allah SWT,<br />kami mengundang Anda untuk hadir.
               </p>
 
               <motion.button
                 onClick={openParty}
-                className="btn-gold relative inline-flex items-center gap-2 mt-8 rounded-full px-9 py-4 text-xs font-bold tracking-widest uppercase"
+                className="btn-gold animate-glow-border relative inline-flex items-center gap-2 mt-8 rounded-full px-9 py-4 text-xs font-bold tracking-widest uppercase"
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 2.5, duration: 0.8 }}
@@ -420,7 +434,7 @@ export default function Home() {
                 Buka Undangan
               </motion.button>
 
-              <p className="mt-7 text-[9px] tracking-[.3em] text-[#8a6a2b] font-bold">1 DESEMBER 2026 · 08.00</p>
+              <p className="mt-7 text-[9px] tracking-[.3em] text-[#8a6a2b] font-bold">{EVENT_DATE.toUpperCase()} · {EVENT_TIME.toUpperCase()}</p>
             </motion.div>
           </motion.section>
         )}
@@ -432,7 +446,10 @@ export default function Home() {
           {/* header */}
           <header className="sticky top-0 z-40 bg-[#fff8ec]/90 backdrop-blur-lg border-b border-[#f0c66c]/40 text-[#233025]">
             <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
-              <a href="#home" className="flex items-center gap-2 font-display text-lg tracking-wide text-[#2a5c48]"><Star8 size={20} color="#e0a94e" /> Faariz <span className="font-accent italic text-[#c17e2a]">Al-khowarizmi</span></a>
+              <a href="#home" className="flex items-center gap-2 font-display text-lg tracking-wide text-[#2a5c48]">
+                <Star8 size={20} color="#e0a94e" />
+                Faariz <span className="font-accent italic text-[#c17e2a]">Al-khowarizmi</span>
+              </a>
               <button
                 aria-label="Musik"
                 aria-pressed={music}
@@ -449,20 +466,14 @@ export default function Home() {
           <section id="home" className="sky-gradient text-center relative scroll-mt-20 overflow-hidden">
             <div className="absolute inset-0 pattern-stars opacity-70" aria-hidden="true" />
             <Dust count={12} />
-            <div className="absolute -top-16 right-[8%] opacity-80"><Moon className="w-28 h-28 animate-float-slow" /></div>
-            <div className="absolute -bottom-6 left-[6%] opacity-90"><Balloon color="#f2d4a0" size={48} /></div>
+            <div className="absolute -top-16 right-[8%] opacity-80 pointer-events-none"><Moon className="w-28 h-28 animate-float-slow" /></div>
+            <div className="absolute -bottom-8 left-[6%] opacity-90 pointer-events-none"><Balloon color="#f2d4a0" size={48} /></div>
 
-            <motion.div variants={stagger} initial="hidden" animate="show" className="relative max-w-3xl mx-auto px-5 pt-20 pb-24">
+            <motion.div variants={stagger} initial="hidden" animate="show" className="relative max-w-3xl mx-auto px-5 pt-16 pb-24">
               <motion.p variants={fadeUp} className="font-arabic gold-shimmer text-2xl sm:text-3xl">{BISMILLAH}</motion.p>
 
-              <motion.div variants={fadeUp} className="relative mx-auto my-7 max-w-[140px] aspect-[4/5]">
-                <ArchFrame size={140} className="mx-auto drop-shadow-xl" />
-                <div
-                  className="absolute overflow-hidden"
-                  style={{ left: "22%", right: "22%", top: "10%", bottom: "9%", borderRadius: "38px 38px 0 0" }}
-                >
-                  <img src={HERO_PHOTO} alt="Ananda Faariz" loading="eager" fetchPriority="high" className="h-full w-full object-cover object-[50%_18%]" />
-                </div>
+              <motion.div variants={fadeUp} className="relative my-7">
+                <ArchPhoto size={140} />
               </motion.div>
 
               <motion.p variants={fadeUp} className="text-[10px] uppercase tracking-[.42em] text-[#8a6a2b] font-bold">Walimatul Khitan</motion.p>
@@ -494,7 +505,7 @@ export default function Home() {
             <motion.p variants={fadeUp} className="font-accent italic text-2xl sm:text-3xl text-[#c17e2a] leading-snug">
               “Semoga Allah SWT senantiasa memberikan keberkahan dan kemudahan kepada putra kami.”
             </motion.p>
-            <motion.p variants={fadeUp} className="mt-6 text-[10px] tracking-[.25em] uppercase text-[#8a6a2b] font-bold">Orang tua</motion.p>
+            <motion.p variants={fadeUp} className="mt-7 text-[10px] tracking-[.25em] uppercase text-[#8a6a2b] font-bold">Orang tua</motion.p>
             <motion.p variants={fadeUp} className="font-display font-semibold text-2xl sm:text-3xl mt-2 text-[#233025]">{PARENTS}</motion.p>
           </motion.section>
 
@@ -510,15 +521,15 @@ export default function Home() {
                   <h2 className="font-display font-semibold text-4xl mt-3 text-center text-[#233025]">Waktu & Tempat</h2>
 
                   <motion.div variants={fadeUp} className="grid sm:grid-cols-2 gap-4 mt-9">
-                    <div className="rounded-3xl border border-[#f0c66c]/50 bg-[#fff8ec] p-6">
+                    <div className="rounded-3xl border border-[#f0c66c]/50 bg-[#fff8ec] p-6 text-center transition-transform duration-300 hover:-translate-y-1.5">
                       <CalendarDays className="text-[#e0a94e] mx-auto" size={26} />
-                      <p className="mt-3 text-[10px] tracking-[.2em] uppercase text-[#a5823f] font-bold text-center">Hari & Tanggal</p>
-                      <p className="font-display font-semibold text-xl mt-2 text-center text-[#233025]">{EVENT_DATE}</p>
+                      <p className="mt-3 text-[10px] tracking-[.2em] uppercase text-[#a5823f] font-bold">Hari & Tanggal</p>
+                      <p className="font-display font-semibold text-xl mt-2 text-[#233025]">{EVENT_DATE}</p>
                     </div>
-                    <div className="rounded-3xl border border-[#f0c66c]/50 bg-[#fff8ec] p-6">
+                    <div className="rounded-3xl border border-[#f0c66c]/50 bg-[#fff8ec] p-6 text-center transition-transform duration-300 hover:-translate-y-1.5">
                       <Clock3 className="text-[#e0a94e] mx-auto" size={26} />
-                      <p className="mt-3 text-[10px] tracking-[.2em] uppercase text-[#a5823f] font-bold text-center">Waktu</p>
-                      <p className="font-display font-semibold text-xl mt-2 text-center text-[#233025]">{EVENT_TIME}</p>
+                      <p className="mt-3 text-[10px] tracking-[.2em] uppercase text-[#a5823f] font-bold">Waktu</p>
+                      <p className="font-display font-semibold text-xl mt-2 text-[#233025]">{EVENT_TIME}</p>
                     </div>
                   </motion.div>
 
@@ -548,7 +559,7 @@ export default function Home() {
               <p className="text-sm text-[#6b5a3e] mt-3 font-medium">Sebuah potret kecil penuh kenangan.</p>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-7 max-w-2xl mx-auto">
+            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
               {photos.map((p, i) => (
                 <motion.figure
                   key={p.src}
@@ -579,7 +590,7 @@ export default function Home() {
                 </motion.figure>
               ))}
             </motion.div>
-            <motion.p variants={fadeUp} className="text-center text-[10px] text-[#a5823f] mt-6">
+            <motion.p variants={fadeUp} className="text-center text-[10px] text-[#a5823f] mt-8">
               Kenangan bersama Ananda Faariz.
             </motion.p>
           </motion.section>
@@ -601,7 +612,7 @@ export default function Home() {
               </motion.div>
 
               <motion.div variants={fadeUp} className="relative">
-                <div className="absolute -top-4 -right-3 rotate-12 opacity-[0.14] pointer-events-none"><Medallion size={120} spin={false} /></div>
+                <div className="absolute -top-4 -right-3 rotate-12 opacity-[0.14] pointer-events-none" aria-hidden="true"><Medallion size={120} spin={false} /></div>
                 <form onSubmit={submitRSVP} className="soft-panel relative p-6">
                   {sent ? (
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="py-10 text-center">
