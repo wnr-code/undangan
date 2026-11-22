@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://wnr21.vercel.app"),
   title: "Walimatul Khitan | Muhammad Faariz Al-khowarizmi",
   description:
-    "Undangan Walimatul Khitan — Muhammad Faariz Al-khowarizmi. 1 Desember 2026, Dusun Margasari RT 01 RW 04.",
+    "Undangan Walimatul Khitan — Muhammad Faariz Al-khowarizmi. 1 Desember 2026 · Dusun Margasari RT 01/RW 04.",
   keywords: ["undangan", "walimatul khitan", "khitanan", "Islam"],
   openGraph: {
     title: "Walimatul Khitan | Muhammad Faariz Al-khowarizmi",
     description:
       "Undangan Walimatul Khitan — bersyukur atas lahirnya Muhammad Faariz Al-khowarizmi.",
-    siteName: "Undangan Walimatul Khitan",
+    siteName: "Faariz Walimatul Khitan",
     locale: "id_ID",
     type: "website",
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b231a",
+  themeColor: "#fde8cf",
 };
 
 export default function RootLayout({
