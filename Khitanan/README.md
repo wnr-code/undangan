@@ -1,5 +1,10 @@
 # Undangan Walimatul Khitan — Luxury Islamic
 
+Undangan Walimatul Khitan untuk **Muhammad Faariz Al-khowarizmi**.
+Selasa, 1 Desember 2026 · 08.00 WIB · Dusun Margasari RT 01 / RW 04
+
+Orang tua: Cucu Syamsudin S. H & Aam Himayah
+
 Starter website undangan digital berbasis Next.js App Router, Tailwind CSS v4, Framer Motion, Lucide, dan Supabase.
 
 ## Menjalankan
@@ -10,8 +15,8 @@ Starter website undangan digital berbasis Next.js App Router, Tailwind CSS v4, F
 
 ## Personalisasi
 Edit `app/page.tsx`:
-- `Muhammad Raihan`: nama anak.
-- `Bapak Ahmad & Ibu Siti`: nama orang tua.
+- `Muhammad Faariz Al-khowarizmi`: nama anak.
+- `Cucu Syamsudin S. H & Aam Himayah`: nama orang tua.
 - Tanggal, waktu, alamat, dan URL Google Maps.
 - Array `photos`: ganti gambar galeri di `public/images/` dengan foto keluarga.
 - Kalau ingin musik latar yang berbeda, ganti file `public/audio/backsound.wav` dengan arsip yang bebas lisensi-nya milik Anda.

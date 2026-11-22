@@ -8,9 +8,18 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
-/* ---------------- data ---------------- */
-const eventDate = new Date(process.env.NEXT_PUBLIC_EVENT_DATE || "2026-12-20T09:00:00+07:00");
-const mapsUrl = process.env.NEXT_PUBLIC_MAPS_URL || "https://maps.google.com";
+/* ============ DATA ============ */
+const eventDate = new Date(process.env.NEXT_PUBLIC_EVENT_DATE || "2026-12-01T08:00:00+07:00");
+const mapsUrl = process.env.NEXT_PUBLIC_MAPS_URL || "https://www.google.com/maps/search/?api=1&query=Dusun+Margasari+RT+01+RW+04";
+
+const NAME = "Muhammad Faariz";
+const NAME_FULL = "Muhammad Faariz Al-khowarizmi";
+const PARENTS = "Cucu Syamsudin S. H & Aam Himayah";
+const EVENT_DATE = "Selasa, 1 Desember 2026";
+const EVENT_TIME = "08.00 WIB";
+const ADDRESS = "Dusun Margasari RT 01 / RW 04";
+
+const BISMILLAH = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
 
 const photos = [
   { src: "/images/galeri-1.jpg", caption: "Arca keagungan & iman" },
@@ -18,51 +27,55 @@ const photos = [
   { src: "/images/galeri-3.jpg", caption: "Semoga keberkahannya mengalir" },
 ];
 
-const BISMILLAH = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
-
-/* deterministik (aman untuk SSR) */
+/* ============ helpers ============ */
 function seeded(i: number) { const x = Math.sin(i * 9999.141) * 10000; return x - Math.floor(x); }
 
-const particles = Array.from({ length: 16 }, (_, i) => ({
+const particles = Array.from({ length: 14 }, (_, i) => ({
   x: seeded(i + 1) * 100,
   y: seeded(i + 51) * 100,
-  size: 2 + seeded(i + 101) * 3,
+  size: 1.5 + seeded(i + 101) * 2.5,
   duration: 7 + seeded(i + 151) * 7,
   delay: seeded(i + 201) * 5,
 }));
 
-/* ---------------- animations ---------------- */
 const fadeUp = {
   hidden: { opacity: 0, y: 42 },
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
 };
-const stagger = { show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } };
+const stagger = { show: { transition: { staggerChildren: 0.12, delayChildren: 0.08 } } };
 
-/* ---------------- components ---------------- */
+/* ============ components ============ */
 function Medallion({ size = 44, spin = true, className = "" }: { size?: number; spin?: boolean; className?: string }) {
   return (
     <svg viewBox="0 0 100 100" width={size} height={size} className={`${spin ? "animate-medallion" : ""} ${className}`} aria-hidden="true">
-      <circle cx="50" cy="50" r="47" fill="none" stroke="#c9a15a" strokeOpacity=".45" strokeWidth="1" />
-      <circle cx="50" cy="50" r="41" fill="none" stroke="#c9a15a" strokeOpacity=".35" strokeWidth="1" />
-      <g fill="none" stroke="#e6c97e" strokeWidth="1.4" strokeOpacity=".9">
+      <circle cx="50" cy="50" r="47" fill="none" stroke="#b98e44" strokeOpacity=".5" strokeWidth="1" />
+      <circle cx="50" cy="50" r="41" fill="none" stroke="#b98e44" strokeOpacity=".35" strokeWidth="1" />
+      <g fill="none" stroke="#d2ad68" strokeWidth="1.3" strokeOpacity=".9">
         <rect x="26" y="26" width="48" height="48" rx="3" />
         <rect x="26" y="26" width="48" height="48" rx="3" transform="rotate(45 50 50)" />
       </g>
-      <circle cx="50" cy="50" r="7" fill="none" stroke="#e6c97e" strokeWidth="1.4" strokeOpacity=".9" />
-      <circle cx="50" cy="50" r="2.6" fill="#e6c97e" />
+      <circle cx="50" cy="50" r="7" fill="none" stroke="#d2ad68" strokeWidth="1.3" strokeOpacity=".9" />
+      <circle cx="50" cy="50" r="2.6" fill="#d2ad68" />
     </svg>
   );
 }
 
-function Particles() {
+function Particles({ count = 14 }: { count?: number }) {
+  const list = Array.from({ length: count }, (_, i) => ({
+    x: seeded(i + 1) * 100,
+    y: seeded(i + 101) * 100,
+    size: 1.5 + seeded(i + 201) * 3,
+    duration: 7 + seeded(i + 301) * 7,
+    delay: seeded(i + 401) * 5,
+  }));
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      {particles.map((p, i) => (
+      {list.map((p, i) => (
         <motion.span
           key={i}
-          className="absolute rounded-full bg-[#e6c97e]"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, filter: "blur(0.6px)" }}
-          animate={{ y: [0, -26, 0], opacity: [0.12, 0.85, 0.12], scale: [0.7, 1.35, 0.7] }}
+          className="absolute rounded-full bg-[#ecd08c]"
+          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.size, height: p.size, filter: "blur(0.5px)" }}
+          animate={{ y: [0, -28, 0], opacity: [0.12, 0.85, 0.12], scale: [0.7, 1.4, 0.7] }}
           transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
@@ -76,38 +89,37 @@ function Loader({ done }: { done: boolean }) {
       {!done && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#071a13]"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#06170f]"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.08, transition: { duration: 0.7, ease: "easeInOut" } }}
+          exit={{ opacity: 0, scale: 1.07, transition: { duration: 0.65, ease: "easeInOut" } }}
         >
-          <Particles />
+          <Particles count={10} />
           <motion.div
-            className="relative"
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <Medallion size={92} />
+            <Medallion size={80} />
           </motion.div>
           <motion.p
-            className="font-arabic gold-shimmer text-2xl sm:text-3xl mt-8 px-4 text-center"
-            initial={{ opacity: 0, y: 16 }}
+            className="font-arabic gold-shimmer text-2xl sm:text-3xl mt-7 px-4 text-center"
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.8 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
           >
             {BISMILLAH}
           </motion.p>
           <motion.div
-            className="mt-6 h-px bg-gradient-to-r from-transparent via-[#e6c97e] to-transparent"
+            className="mt-5 h-px bg-gradient-to-r from-transparent via-[#ecd08c] to-transparent"
             initial={{ width: 0, opacity: 0 }}
-            animate={{ width: 180, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.9 }}
+            animate={{ width: 170, opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.85 }}
           />
           <motion.p
-            className="mt-4 text-[10px] uppercase tracking-[.35em] text-white/45"
+            className="mt-4 text-[10px] uppercase tracking-[.4em] text-white/45"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
+            transition={{ delay: 0.85, duration: 0.8 }}
           >
             Walimatul Khitan
           </motion.p>
@@ -132,17 +144,17 @@ function ArchFrame({ size = 190, className = "" }: { size?: number; className?: 
       <motion.path
         d="M 34 236 L 34 78 C 34 28 66 8 100 8 C 134 8 166 28 166 78 L 166 236"
         fill="none"
-        stroke="#e6c97e"
+        stroke="#ecd08c"
         strokeWidth="2"
         strokeLinecap="round"
         initial={{ pathLength: 0, opacity: 0.3 }}
         animate={{ pathLength: 1, opacity: 1 }}
-        transition={{ duration: 1.6, ease: "easeInOut", delay: 0.5 }}
+        transition={{ duration: 1.6, ease: "easeInOut", delay: 0.4 }}
       />
       <motion.path
         d="M 46 236 L 46 82 C 46 40 70 22 100 22 C 130 22 154 40 154 82 L 154 236"
         fill="none"
-        stroke="#c9a15a"
+        stroke="#b98e44"
         strokeWidth="1"
         strokeOpacity=".45"
         initial={{ pathLength: 0, opacity: 0 }}
@@ -164,8 +176,8 @@ function Countdown() {
     return (
       <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-xl mx-auto">
         {["Hari", "Jam", "Menit", "Detik"].map((l) => (
-          <div key={l} className="border border-[#c7a56a]/40 bg-white/5 rounded-xl py-4 text-center">
-            <div className="font-display text-2xl sm:text-4xl text-[#e1c995]">—</div>
+          <div key={l} className="border border-[#b98e44]/40 bg-white/5 rounded-xl py-4 text-center">
+            <div className="font-display text-2xl sm:text-4xl text-[#ecd08c]">—</div>
             <div className="mt-1 text-[9px] uppercase tracking-[.2em] text-white/60">{l}</div>
           </div>
         ))}
@@ -182,13 +194,13 @@ function Countdown() {
   return (
     <div className="grid grid-cols-4 gap-2 sm:gap-4 max-w-xl mx-auto">
       {units.map(([label, value]) => (
-        <div key={label} className="border border-[#c7a56a]/40 bg-white/5 rounded-xl py-4 text-center">
+        <div key={label} className="border border-[#b98e44]/40 bg-white/5 rounded-xl py-4 text-center">
           <motion.div
             key={String(value)}
             initial={{ y: -14, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 26 }}
-            className="font-display text-2xl sm:text-4xl text-[#e1c995]"
+            className="font-display text-2xl sm:text-4xl text-[#ecd08c]"
           >
             {String(value).padStart(2, "0")}
           </motion.div>
@@ -199,7 +211,7 @@ function Countdown() {
   );
 }
 
-/* ---------------- page ---------------- */
+/* ============ page ============ */
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [opened, setOpened] = useState(false);
@@ -255,7 +267,7 @@ export default function Home() {
 
   const openParty = () => { setOpened(true); setMusic(true); };
 
-  /* ============ loader + closed hero ============ */
+  /* ========== OPEN-STATE ========== */
   return (
     <main className="overflow-hidden antialiased">
       <Loader done={loaded} />
@@ -266,18 +278,20 @@ export default function Home() {
             key="hero-closed"
             className="hero-bg relative min-h-[100svh] text-white flex items-center justify-center px-5 py-12"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.05, filter: "blur(6px)", transition: { duration: 0.85 } }}
+            exit={{ opacity: 0, scale: 1.06, filter: "blur(8px)", transition: { duration: 0.85 } }}
           >
             <div className="absolute inset-0 islamic-pattern-subtle opacity-70 pointer-events-none" />
-            <Particles />
+            <div className="absolute -top-20 -right-20 w-[340px] h-[340px] rounded-full bg-[#d2ad68]/20 blur-3xl animate-glow-orb pointer-events-none" />
+            <Particles count={12} />
+
             <motion.div
               className="relative z-10 max-w-xl w-full text-center"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 34 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: "easeOut", delay: 2.0 }}
+              transition={{ duration: 1.0, ease: "easeOut", delay: 2.0 }}
             >
               <motion.p
-                className="font-arabic gold-shimmer text-xl sm:text-2xl"
+                className="font-arabic gold-shimmer text-2xl sm:text-3xl"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.15, duration: 0.9 }}
@@ -286,48 +300,52 @@ export default function Home() {
               </motion.p>
 
               <motion.div
-                className="relative mx-auto mt-6 mb-7"
-                initial={{ opacity: 0, y: 20 }}
+                className="relative mx-auto my-8 max-w-[215px] aspect-[4/5]"
+                initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 2.25, duration: 0.9 }}
+                transition={{ delay: 2.25, duration: 1.0 }}
               >
-                <ArchFrame size={182} className="mx-auto" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center pb-6 pointer-events-none">
-                  <span className="font-arabic text-5xl sm:text-6xl leading-none text-[#eed9a6] drop-shadow-lg" aria-hidden="true">م</span>
+                <ArchFrame size={215} className="mx-auto" />
+                <div className="absolute inset-0 flex items-center justify-center pt-2">
+                  <span className="font-arabic text-7xl leading-none text-[#f3ddc0] drop-shadow-lg" aria-hidden="true">م</span>
                 </div>
               </motion.div>
 
-              <p className="text-[10px] tracking-[.35em] uppercase text-white/55">Undangan Walimatul Khitan</p>
-              <h1 className="font-display text-5xl sm:text-7xl leading-tight mt-3 text-[#f5eddb]">Muhammad<br /><span className="italic gold-text">Raihan</span></h1>
-              <p className="mt-5 text-xs text-white/65">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+              <p className="text-[10px] tracking-[.4em] uppercase text-white/55">Undangan Walimatul Khitan</p>
+
+              <h1 className="font-display text-5xl sm:text-7xl leading-[1.05] mt-4 text-[#f7efdc]">
+                {NAME}<br /><span className="italic gold-shimmer">Al-khowarizmi</span>
+              </h1>
+
+              <p className="mt-5 text-xs tracking-[.18em] uppercase text-white/60">Kepada Yth.</p>
               <motion.p
                 key={greeting}
-                className="font-accent text-2xl sm:text-3xl mt-1 gold-text italic"
-                initial={{ opacity: 0, y: 8 }}
+                className="font-accent italic text-2xl sm:text-3xl mt-1 text-[#f0cf8b]"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 2.45, duration: 0.7 }}
               >
                 {greeting}
               </motion.p>
 
-              <p className="mt-8 text-xs sm:text-sm text-white/60 leading-6">
-                Dengan memohon rahmat dan ridha Allah SWT,<br />kami mengundang Anda untuk hadir.
+              <p className="mt-7 text-xs sm:text-sm text-white/65 leading-7">
+                Dengan memohon rahmat dan ridha Allah SWT,<br />kami mengundang Anda untuk hadir meresmikan maulid akbar putra kami.
               </p>
 
               <motion.button
                 onClick={openParty}
-                className="btn-gold relative inline-flex items-center gap-2 mt-10 rounded-full px-9 py-4 text-xs font-bold tracking-widest uppercase"
-                initial={{ opacity: 0, y: 16 }}
+                className="btn-gold relative inline-flex items-center gap-2 mt-9 rounded-full px-9 py-4 text-xs font-bold tracking-widest uppercase"
+                initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 2.6, duration: 0.8 }}
                 whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Sparkles size={16} />
                 Buka Undangan
               </motion.button>
 
-              <p className="mt-8 text-[9px] tracking-[.25em] text-white/40">20 DESEMBER 2026 · BANJAR</p>
+              <p className="mt-7 text-[9px] tracking-[.28em] text-white/40">1 DESEMBER 2026 · 08.00</p>
             </motion.div>
           </motion.section>
         )}
@@ -335,21 +353,21 @@ export default function Home() {
 
       {opened && (
         <>
-          {/* ======= sticky header ======= */}
-          <header className="sticky top-0 z-40 bg-[#0c2b20]/90 backdrop-blur-md text-white border-b border-[#c7a56a]/25">
+          {/* ================= sticky header ================= */}
+          <header className="sticky top-0 z-40 bg-[#0b231a]/92 backdrop-blur-md text-white border-b border-[#b98e44]/25">
             <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-              <a href="#home" className="font-display text-lg tracking-wide text-[#e2c995]">M. Raihan</a>
+              <a href="#home" className="font-display text-lg tracking-wide text-[#ecd08c]">F. Al-khowarizmi</a>
               <nav className="hidden md:flex items-center gap-7 text-[11px] tracking-widest uppercase text-white/75">
-                <a href="#kisah" className="hover:text-[#e6c97e] transition-colors">Tentang</a>
-                <a href="#acara" className="hover:text-[#e6c97e] transition-colors">Acara</a>
-                <a href="#galeri" className="hover:text-[#e6c97e] transition-colors">Galeri</a>
-                <a href="#rsvp" className="hover:text-[#e6c97e] transition-colors">RSVP</a>
+                <a href="#kisah" className="hover:text-[#ecd08c] transition-colors">Tentang</a>
+                <a href="#acara" className="hover:text-[#ecd08c] transition-colors">Acara</a>
+                <a href="#galeri" className="hover:text-[#ecd08c] transition-colors">Galeri</a>
+                <a href="#rsvp" className="hover:text-[#ecd08c] transition-colors">RSVP</a>
               </nav>
               <div className="flex items-center gap-3">
                 <button
                   aria-label="Musik"
                   onClick={() => setMusic((m) => !m)}
-                  className={`p-2.5 rounded-full border transition-colors ${music ? "border-[#c7a56a] bg-[#c7a56a]/15 text-[#e6c97e]" : "border-white/20 text-white/80 hover:border-[#c7a56a]/50"}`}
+                  className={`p-2.5 rounded-full border transition-colors ${music ? "border-[#b98e44] bg-[#b98e44]/15 text-[#ecd08c]" : "border-white/20 text-white/80 hover:border-[#b98e44]/50"}`}
                 >
                   {music ? <Volume2 size={16} /> : <VolumeX size={16} />}
                 </button>
@@ -361,79 +379,84 @@ export default function Home() {
             {mobileMenu && (
               <div className="md:hidden px-5 pb-4 flex flex-col gap-3 text-sm">
                 {[["#kisah", "Tentang"], ["#acara", "Acara"], ["#galeri", "Galeri"], ["#rsvp", "RSVP"]].map(([href, label]) => (
-                  <a key={href} href={href} onClick={() => setMobileMenu(false)} className="hover:text-[#e6c97e] transition-colors">{label}</a>
+                  <a key={href} href={href} onClick={() => setMobileMenu(false)} className="hover:text-[#ecd08c] transition-colors">{label}</a>
                 ))}
               </div>
             )}
           </header>
 
-          {/* ======= hero kecil ======= */}
-          <section id="home" className="hero-bg text-white px-5 pt-20 pb-24 text-center relative scroll-mt-20">
-            <div className="absolute inset-0 islamic-pattern-subtle opacity-60 pointer-events-none" />
-            <Particles />
+          {/* ================= hero after open ================= */}
+          <section id="home" className="hero-bg text-white px-5 pt-16 pb-24 text-center relative scroll-mt-20">
+            <div className="absolute inset-0 islamic-pattern-subtle opacity-50 pointer-events-none" />
+            <div className="absolute -top-24 -right-24 w-[380px] h-[380px] rounded-full bg-[#d2ad68]/16 blur-3xl pointer-events-none" />
+            <Particles count={12} />
+
             <motion.div variants={stagger} initial="hidden" animate="show" className="relative max-w-3xl mx-auto">
-              <motion.p variants={fadeUp} className="section-kicker-light font-arabic text-xl sm:text-2xl tracking-normal normal-case" >{BISMILLAH}</motion.p>
-              <motion.div variants={fadeUp} className="relative mx-auto my-8 w-32 h-40">
-                <ArchFrame size={128} className="mx-auto" />
-                <div className="absolute inset-0 flex items-center justify-center pt-6"><span className="font-arabic text-6xl text-[#eed9a6]">م</span></div>
+              <motion.p variants={fadeUp} className="font-arabic gold-shimmer text-xl sm:text-2xl px-4">{BISMILLAH}</motion.p>
+
+              <motion.div variants={fadeUp} className="relative mx-auto my-6 max-w-[150px] aspect-[4/5]">
+                <ArchFrame size={150} className="mx-auto" />
+                <div className="absolute inset-0 flex items-center justify-center pt-1"><span className="font-arabic text-6xl leading-none text-[#f3ddc0]">م</span></div>
               </motion.div>
-              <motion.p variants={fadeUp} className="text-xs uppercase tracking-[.35em] text-white/60">Walimatul Khitan</motion.p>
-              <motion.h1 variants={fadeUp} className="font-display text-5xl sm:text-7xl mt-5 leading-tight text-[#f5eddb]">Muhammad <span className="italic gold-text">Raihan</span></motion.h1>
+
+              <motion.p variants={fadeUp} className="text-[10px] uppercase tracking-[.4em] text-white/60">Walimatul Khitan</motion.p>
+              <motion.h1 variants={fadeUp} className="font-display text-5xl sm:text-7xl mt-5 leading-[1.05] text-[#f7efdc]">
+                {NAME} <span className="italic gold-shimmer">Al-khowarizmi</span>
+              </motion.h1>
               <motion.p variants={fadeUp} className="mt-6 max-w-lg mx-auto text-sm leading-7 text-white/70">
                 Dengan memohon rahmat dan ridha Allah SWT, kami bermaksud menyelenggarakan syukuran walimatul khitan putra kami.
               </motion.p>
-              <motion.a
-                variants={fadeUp}
-                href="#acara"
-                className="inline-flex mt-8 items-center gap-2 text-xs uppercase tracking-[.22em] text-[#e2c995] hover:text-[#f5e3b8] transition-colors"
-              >
+              <motion.a variants={fadeUp} href="#acara" className="inline-flex mt-8 items-center gap-2 text-xs uppercase tracking-[.24em] text-[#ecd08c] hover:text-[#f8e7bd] transition-colors">
                 Lihat detail acara <ChevronDown size={15} className="animate-bounce" />
               </motion.a>
             </motion.div>
           </section>
 
-          {/* ======= tentang ======= */}
-          <motion.section id="kisah" className="py-20 px-5 text-center max-w-3xl mx-auto scroll-mt-24" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
-            <motion.div variants={fadeUp} className="flex justify-center"><Medallion size={40} spin={false} /></motion.div>
+          {/* ================= tentang ================= */}
+          <motion.section id="kisah" className="py-20 px-5 text-center max-w-3xl mx-auto scroll-mt-20" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
+            <motion.div variants={fadeUp} className="flex justify-center"><Medallion size={38} spin={false} /></motion.div>
             <motion.p variants={fadeUp} className="section-kicker mt-4">Dengan penuh rasa syukur</motion.p>
-            <motion.h2 variants={fadeUp} className="font-display text-3xl sm:text-4xl mt-4">Assalamu’alaikum Warahmatullahi Wabarakatuh</motion.h2>
+            <motion.h2 variants={fadeUp} className="font-display text-3xl sm:text-4xl mt-4 text-[#12291f]">Assalamu’alaikum Warahmatullahi Wabarakatuh</motion.h2>
             <motion.p variants={fadeUp} className="text-sm leading-8 text-stone-600 mt-6">
               Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada putra kami.
             </motion.p>
-            <motion.div variants={fadeUp} className="ornament-line my-8 max-w-sm mx-auto"><Medallion size={26} spin={false} /></motion.div>
-            <motion.p variants={fadeUp} className="font-accent italic text-2xl sm:text-3xl text-[#9a7845] leading-snug">
-              “Semoga menjadi anak yang sholeh, berbakti kepada orang tua, serta bermanfaat bagi sesama.”
+            <motion.div variants={fadeUp} className="ornament-line my-8 max-w-sm mx-auto"><Medallion size={24} spin={false} /></motion.div>
+            <motion.p variants={fadeUp} className="font-accent italic text-2xl sm:text-3xl text-[#8f6a2f] leading-snug">
+              “Semoga Allah SWT senantiasa memberikan keberkahan dan kemudahan kepada putra kami.”
             </motion.p>
-            <motion.p variants={fadeUp} className="mt-6 text-[10px] tracking-widest uppercase text-stone-400">Keluarga besar</motion.p>
-            <motion.p variants={fadeUp} className="font-display text-2xl sm:text-3xl mt-2 text-[#1d4a38]">Bapak Ahmad & Ibu Siti</motion.p>
+            <motion.p variants={fadeUp} className="mt-6 text-[10px] tracking-widest uppercase text-stone-400">Keluarga</motion.p>
+            <motion.p variants={fadeUp} className="font-display text-2xl sm:text-3xl mt-2 text-[#14291f]">{PARENTS}</motion.p>
           </motion.section>
 
-          {/* ======= acara ======= */}
+          {/* ================= acara ================= */}
           <motion.section id="acara" className="hero-bg text-white py-20 px-5 text-center relative scroll-mt-16" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
-            <div className="absolute inset-0 islamic-pattern-subtle opacity-50 pointer-events-none" />
+            <div className="absolute inset-0 islamic-pattern-subtle opacity-45 pointer-events-none" />
             <div className="relative">
               <motion.p variants={fadeUp} className="section-kicker-light">Save the date</motion.p>
               <motion.h2 variants={fadeUp} className="font-display text-4xl mt-3">Waktu & Tempat</motion.h2>
+
               <motion.div variants={fadeUp} className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto mt-10">
                 <div className="glass-dark rounded-2xl p-7">
-                  <CalendarDays className="mx-auto text-[#e6c97e]" size={26} />
+                  <CalendarDays className="mx-auto text-[#ecd08c]" size={26} />
                   <p className="mt-4 text-[10px] tracking-[.2em] uppercase text-white/50">Hari & Tanggal</p>
-                  <p className="font-display text-2xl mt-2">Minggu, 20 Desember 2026</p>
+                  <p className="font-display text-2xl mt-2">{EVENT_DATE}</p>
                 </div>
                 <div className="glass-dark rounded-2xl p-7">
-                  <Clock3 className="mx-auto text-[#e6c97e]" size={26} />
+                  <Clock3 className="mx-auto text-[#ecd08c]" size={26} />
                   <p className="mt-4 text-[10px] tracking-[.2em] uppercase text-white/50">Waktu</p>
-                  <p className="font-display text-2xl mt-2">09.00 – selesai</p>
+                  <p className="font-display text-2xl mt-2">{EVENT_TIME}</p>
                 </div>
               </motion.div>
+
               <motion.div variants={fadeUp} className="mt-10">
-                <MapPin className="mx-auto text-[#e6c97e]" size={24} />
-                <p className="font-display text-2xl mt-3">Kediaman Keluarga</p>
-                <p className="text-sm text-white/60 mt-2">Jl. Contoh No. 123, Kota Banjar, Jawa Barat</p>
+                <MapPin className="mx-auto text-[#ecd08c]" size={24} />
+                <p className="font-display text-2xl mt-3">Dusun Margasari</p>
+                <p className="text-sm text-white/60 mt-2">RT 01 / RW 04</p>
                 <a href={mapsUrl} target="_blank" rel="noreferrer" className="btn-gold inline-flex rounded-full px-6 py-3 mt-5 text-xs font-bold uppercase tracking-widest gap-2 items-center">
                   <MapPin size={14} /> Buka Google Maps
                 </a>
               </motion.div>
+
               <motion.div variants={fadeUp} className="mt-14">
                 <p className="section-kicker-light mb-6">Menghitung hari bahagia</p>
                 <Countdown />
@@ -441,36 +464,39 @@ export default function Home() {
             </div>
           </motion.section>
 
-          {/* ======= galeri ======= */}
-          <motion.section id="galeri" className="py-20 px-5 max-w-6xl mx-auto scroll-mt-24" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
+          {/* ================= galeri ================= */}
+          <motion.section id="galeri" className="py-20 px-5 max-w-6xl mx-auto scroll-mt-20" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
             <motion.div variants={fadeUp} className="text-center mb-10">
-              <p className="section-kicker">Momen istimewa</p>
-              <h2 className="font-display text-4xl mt-3">Galeri Keluarga</h2>
+              <p className="section-kicker">Menyaksikan Momentum</p>
+              <h2 className="font-display text-4xl mt-3 text-[#12291f]">Galeri Buah Hati</h2>
               <p className="text-sm text-stone-500 mt-3">Sebuah potret kecil penuh kenangan.</p>
             </motion.div>
-            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {photos.map((p, i) => (
                 <motion.figure
                   key={p.src}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg shadow-emerald-950/10"
-                  whileInView={{ opacity: 1, y: 0 }}
+                  className="group relative"
                   initial={{ opacity: 0, y: 34 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.7, delay: i * 0.12, ease: "easeOut" }}
-                  whileHover={{ y: -6 }}
+                  whileHover={{ y: -8 }}
                 >
-                  <img
-                    src={p.src}
-                    alt={`Galeri keluarga ${i + 1}`}
-                    className="w-full h-64 sm:h-72 object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#071a13]/80 via-[#071a13]/0 to-transparent opacity-80" />
-                  <figcaption className="absolute bottom-0 inset-x-0 p-4 text-left">
-                    <p className="text-white text-[11px] tracking-wider uppercase font-semibold flex items-center gap-2">
-                      <Star size={11} className="text-[#e6c97e]" /> {p.caption}
-                    </p>
-                  </figcaption>
+                  <div className="relative overflow-hidden rounded-t-[160px] rounded-b-2xl border-2 border-[#b98e44]/50 shadow-xl shadow-stone-300/60">
+                    <img
+                      src={p.src}
+                      alt={`Galeri keluarga ${i + 1}`}
+                      className="w-full h-72 object-cover transition-transform duration-[1.1s] ease-out group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#071a13]/85 via-transparent to-transparent opacity-90" />
+                    <figcaption className="absolute bottom-0 inset-x-0 p-4 text-left">
+                      <p className="text-white text-[11px] tracking-wider uppercase font-semibold flex items-center gap-2">
+                        <Star size={11} className="text-[#ecd08c]" /> {p.caption}
+                      </p>
+                    </figcaption>
+                  </div>
                 </motion.figure>
               ))}
             </motion.div>
@@ -479,13 +505,14 @@ export default function Home() {
             </motion.p>
           </motion.section>
 
-          {/* ======= rsvp ======= */}
-          <motion.section id="rsvp" className="bg-[#efe9db] py-20 px-5 scroll-mt-16" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
+          {/* ================= rsvp ================= */}
+          <motion.section id="rsvp" className="paper-bg py-20 px-5 scroll-mt-16" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
             <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-start">
               <motion.div variants={fadeUp}>
+                <Medallion size={34} spin={false} className="mb-4" />
                 <p className="section-kicker">Konfirmasi & doa</p>
-                <h2 className="font-display text-4xl mt-3 leading-tight">Kehadiran Anda</h2>
-                <p className="text-sm leading-7 text-stone-600 mt-5">Mohon konfirmasi kehadiran dan tinggalkan doa terbaik untuk putra kami.</p>
+                <h2 className="font-display text-4xl mt-3 leading-tight text-[#12291f]">Kehadiran Anda</h2>
+                <p className="text-sm leading-7 text-stone-600 mt-5">Mohon konfirmasi kehadiran dan tinggalkan doa terbaik untuk {NAME}.</p>
                 <div className="mt-8 flex items-center gap-3 text-sm text-stone-600">
                   <motion.span animate={{ scale: [1, 1.18, 1] }} transition={{ duration: 1.8, repeat: Infinity }}>
                     <Heart className="text-[#b48c50]" size={18} />
@@ -495,14 +522,14 @@ export default function Home() {
               </motion.div>
 
               <motion.div variants={fadeUp} className="relative">
-                <div className="absolute -top-3 -right-3 rotate-12 opacity-20 pointer-events-none"><Medallion size={120} spin={false} /></div>
-                <form onSubmit={submitRSVP} className="relative bg-[#fbf9f4] rounded-2xl p-6 shadow-lg shadow-stone-300/40 border border-[#e2d9c8]">
+                <div className="absolute -top-4 -right-3 rotate-12 opacity-[0.14] pointer-events-none"><Medallion size={130} spin={false} /></div>
+                <form onSubmit={submitRSVP} className="relative glass-light rounded-3xl p-6 shadow-xl shadow-stone-300/50">
                   {sent ? (
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="py-10 text-center">
                       <motion.div animate={{ scale: [1, 1.25, 1] }} transition={{ duration: 1.4, repeat: Infinity }}>
                         <Heart className="mx-auto text-[#b48c50]" size={34} />
                       </motion.div>
-                      <h3 className="font-display text-2xl mt-4">Terima kasih!</h3>
+                      <h3 className="font-display text-2xl mt-4 text-[#12291f]">Terima kasih!</h3>
                       <p className="text-sm text-stone-500 mt-2">Konfirmasi dan doa Anda telah kami terima.</p>
                       <button type="button" onClick={() => { setSent(false); setRsvp({ name: "", attendance: "Hadir", count: "1", message: "" }); }} className="text-xs underline mt-5">Kirim jawaban lain</button>
                     </motion.div>
@@ -531,18 +558,18 @@ export default function Home() {
             </div>
           </motion.section>
 
-          {/* ======= buku tamu ======= */}
+          {/* ================= buku tamu ================= */}
           <motion.section className="py-16 px-5 max-w-3xl mx-auto" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-60px" }} variants={stagger}>
             <motion.div variants={fadeUp} className="text-center mb-8">
               <p className="section-kicker">Doa dari para tamu</p>
-              <h2 className="font-display text-4xl mt-3">Buku Tamu</h2>
-              <p className="text-sm text-stone-500 mt-3">Ucapan dan doa hangat untuk Muhammad Raihan.</p>
+              <h2 className="font-display text-4xl mt-3 text-[#12291f]">Buku Tamu</h2>
+              <p className="text-sm text-stone-500 mt-3">Ucapan dan doa hangat untuk {NAME_FULL}.</p>
             </motion.div>
             <motion.div variants={fadeUp} className="space-y-3">
               {guestbook.length ? (
                 guestbook.map((entry, i) => (
                   <motion.div key={`${entry.name}-${i}`} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl border border-[#e2d9c8] bg-white p-5 shadow-sm">
-                    <p className="font-semibold text-sm flex items-center gap-2 text-[#1d4a38]"><Star size={12} className="text-[#c9a15a]" /> {entry.name}</p>
+                    <p className="font-semibold text-sm flex items-center gap-2 text-[#14291f]"><Star size={12} className="text-[#b98e44]" /> {entry.name}</p>
                     <p className="text-sm text-stone-600 mt-2 leading-6">{entry.message}</p>
                   </motion.div>
                 ))
@@ -552,34 +579,34 @@ export default function Home() {
             </motion.div>
           </motion.section>
 
-          {/* ======= penutup ======= */}
+          {/* ================= penutup ================= */}
           <motion.section className="py-20 px-5 text-center max-w-2xl mx-auto" initial="hidden" whileInView="show" viewport={{ once: true, margin: "-70px" }} variants={stagger}>
-            <motion.div variants={fadeUp} className="flex justify-center"><Medallion size={44} /></motion.div>
-            <motion.p variants={fadeUp} className="section-kicker mt-5">Doa & harapan</motion.p>
-            <motion.h2 variants={fadeUp} className="font-display text-4xl mt-3">Terima Kasih</motion.h2>
+            <motion.div variants={fadeUp} className="flex justify-center"><Medallion size={42} /></motion.div>
+            <motion.p variants={fadeUp} className="section-kicker mt-4">Doa & harapan</motion.p>
+            <motion.h2 variants={fadeUp} className="font-display text-4xl mt-3 text-[#12291f]">Terima Kasih</motion.h2>
             <motion.p variants={fadeUp} className="text-sm leading-8 text-stone-600 mt-5">
               Merupakan kebahagiaan bagi kami atas kehadiran, doa, dan restu yang diberikan. Semoga Allah SWT membalas segala kebaikan dengan keberkahan.
             </motion.p>
-            <motion.p variants={fadeUp} className="font-accent italic text-2xl sm:text-3xl text-[#9a7845] mt-8">Wassalamu’alaikum Warahmatullahi Wabarakatuh</motion.p>
-            <motion.div variants={fadeUp} className="gold-line my-8 max-w-xs mx-auto" />
+            <motion.p variants={fadeUp} className="font-accent italic text-2xl sm:text-3xl text-[#8f6a2f] mt-8">Wassalamu’alaikum Warahmatullahi Wabarakatuh</motion.p>
+            <motion.div variants={fadeUp} className="ornament-line my-8 max-w-xs mx-auto"><Medallion size={24} spin={false} /></motion.div>
             <motion.p variants={fadeUp} className="text-[10px] tracking-widest uppercase text-stone-500">Hormat kami,</motion.p>
-            <motion.p variants={fadeUp} className="font-display text-2xl mt-2">Keluarga Ahmad & Siti</motion.p>
+            <motion.p variants={fadeUp} className="font-display text-2xl mt-2 text-[#12291f]">{PARENTS}</motion.p>
           </motion.section>
 
-          {/* ======= footer ======= */}
-          <footer className="bg-[#0c2b20] text-white/60 py-10 px-5 text-center relative overflow-hidden">
+          {/* ================= footer ================= */}
+          <footer className="hero-bg text-center text-white/70 py-10 px-5 relative overflow-hidden">
             <div className="absolute inset-0 islamic-pattern-subtle opacity-40 pointer-events-none" />
             <div className="relative">
-              <p className="font-display text-2xl text-[#e2c995]">Muhammad Raihan</p>
-              <p className="text-[10px] mt-2 tracking-[.3em] uppercase">Walimatul Khitan · 2026</p>
-              <p className="text-[10px] mt-5 text-white/35 font-arabic text-sm tracking-normal">{BISMILLAH}</p>
+              <p className="font-arabic text-sm text-[#ecd08c]/80 mb-2">{BISMILLAH}</p>
+              <p className="font-display text-2xl text-[#ecd08c]">{NAME_FULL}</p>
+              <p className="text-[10px] mt-2 tracking-[.3em] uppercase text-white/45">Walimatul Khitan · 2026</p>
             </div>
           </footer>
 
-          {/* ======= music toggle ======= */}
+          {/* ================= music toggle ================= */}
           <motion.button
             onClick={() => setMusic((m) => !m)}
-            className="fixed bottom-5 right-5 z-30 bg-gradient-to-br from-[#e3c584] to-[#b48c50] text-[#1c1509] rounded-full p-4 shadow-2xl shadow-emerald-950/40"
+            className="fixed bottom-5 right-5 z-30 bg-gradient-to-br from-[#ecd08c] to-[#b48c50] text-[#221a0d] rounded-full p-4 shadow-2xl shadow-black/40"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Toggle music"
