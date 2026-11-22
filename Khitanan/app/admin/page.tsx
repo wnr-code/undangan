@@ -11,6 +11,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [rows, setRows] = useState<RSVP[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function load() {
     setLoading(true);
@@ -25,12 +26,13 @@ export default function AdminPage() {
 
   function login(e: React.FormEvent) {
     e.preventDefault();
-    if (password === (process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "demo123")) setAuthorized(true);
-    else alert("Password salah.");
+    if (password === (process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "demo123")) { setAuthorized(true); setError(""); }
+    else setError("Password salah.");
   }
 
   function exportCSV() {
-    const csv = ["Nama,Status,Jumlah,Ucapan", ...rows.map((r) => [r.name, r.attendance, r.guest_count, r.message].map((v) => `"${String(v ?? "").replaceAll('"', '""')}"`).join(","))].join("\n");
+    const safe = (v: unknown) => String(v ?? "").replace(/^[=+\-@]/, "'$&");
+    const csv = ["Nama,Status,Jumlah,Ucapan", ...rows.map((r) => [r.name, r.attendance, r.guest_count, r.message].map((v) => `"${safe(v).replaceAll('"', '""')}"`).join(","))].join("\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
     a.download = "data-rsvp.csv";
@@ -52,8 +54,9 @@ export default function AdminPage() {
           <LockKeyhole className="text-[#c17e2a] mx-auto" size={30} />
           <h1 className="font-display font-semibold text-3xl text-center mt-4 text-[#233025]">Admin Dashboard</h1>
           <p className="text-center text-xs text-[#6b5a3e] mt-2 font-medium">Masuk untuk mengelola konfirmasi tamu.</p>
-          <input className="input mt-6" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password admin" />
+          <input className="input mt-6" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password admin" aria-label="Password admin" />
           <button className="btn-gold w-full rounded-full py-3 mt-4 text-xs font-bold tracking-widest uppercase">MASUK</button>
+          {error && <p role="alert" className="text-[11px] text-red-700 mt-4 text-center font-semibold">{error}</p>}
           <p className="text-[10px] text-[#8a6a2b] mt-4 text-center font-medium">Demo password: demo123. Ganti autentikasi sebelum produksi.</p>
         </motion.form>
       </main>

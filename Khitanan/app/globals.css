@@ -32,7 +32,6 @@ body {
 
 .font-display { font-family: 'Fredoka', sans-serif; font-weight: 600; }
 .font-accent  { font-family: 'Cormorant Garamond', serif; }
-.sec-body     { font-family: 'Quicksand', sans-serif; }
 .font-arabic  { font-family: 'Amiri', serif; direction: rtl; line-height: 1.9; }
 
 /* ---------- pastel gradient helpers ---------- */
@@ -76,15 +75,6 @@ body {
   box-shadow: 0 16px 42px rgba(224, 169, 78, .55);
 }
 
-.btn-soft-pill {
-  background: rgba(255, 253, 246, .85);
-  color: var(--teal);
-  border: 1px solid rgba(224, 169, 78, .4);
-  box-shadow: 0 8px 24px rgba(40, 70, 60, .1);
-  transition: all .3s;
-}
-.btn-soft-pill:hover { background: #ffffff; border-color: #e0a94e; transform: translateY(-2px); }
-
 /* ---------- inputs ---------- */
 .input {
   width: 100%;
@@ -108,11 +98,6 @@ body {
   font-size: 10px;
   font-weight: 700;
   color: #a5823f;
-}
-
-.gold-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #e0a94e, transparent);
 }
 
 .ornament-line {
@@ -167,18 +152,6 @@ body {
   to { transform: rotate(360deg); }
 }
 .animate-medallion { animation: spinSlow 36s linear infinite; }
-
-@keyframes floatDust {
-  0%, 100% { transform: translate(0, 0); opacity: .25; }
-  50% { transform: translate(0, -30px); opacity: .85; }
-}
-.animate-dust { animation: floatDust 8s ease-in-out infinite; }
-
-@keyframes pulseGlow {
-  0%, 100% { transform: scale(1); opacity: .7; }
-  50% { transform: scale(1.12); opacity: 1; }
-}
-.animate-pulse-glow { animation: pulseGlow 3.4s ease-in-out infinite; }
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: #efe9da; }

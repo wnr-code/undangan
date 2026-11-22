@@ -14,12 +14,14 @@ export const metadata: Metadata = {
     siteName: "Faariz Walimatul Khitan",
     locale: "id_ID",
     type: "website",
+    images: [{ url: "/images/faariz-1.jpg", width: 1200, height: 1600, alt: "Muhammad Faariz" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Walimatul Khitan | Muhammad Faariz Al-khowarizmi",
     description:
       "Undangan Walimatul Khitan — bersyukur atas lahirnya Muhammad Faariz Al-khowarizmi.",
+    images: ["/images/faariz-1.jpg"],
   },
 };
 
