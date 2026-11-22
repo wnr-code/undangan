@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MapPin, CalendarDays, Clock3, Music2, Volume2, VolumeX, Heart,
-  Menu, X, Send, ChevronDown, Star,
+  MapPin, CalendarDays, Clock3, Volume2, VolumeX, Heart,
+  Home as HomeIcon, ScrollText, Image as ImageIcon, Send, ChevronDown, Star,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -243,13 +243,43 @@ function Countdown() {
   );
 }
 
+/* ============ bottom nav ============ */
+const NAV_ITEMS = [
+  { id: "home", label: "Beranda", Icon: HomeIcon },
+  { id: "kisah", label: "Tentang", Icon: ScrollText },
+  { id: "acara", label: "Acara", Icon: CalendarDays },
+  { id: "galeri", label: "Galeri", Icon: ImageIcon },
+  { id: "rsvp", label: "RSVP", Icon: Heart },
+];
+const SECTION_IDS = NAV_ITEMS.map((i) => i.id);
+
+function useActiveSection(ids: string[], ready: boolean) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    if (!ready) return;
+    const sections = ids.map((id) => document.getElementById(id)).filter((el): el is HTMLElement => el !== null);
+    if (!sections.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -50% 0px" }
+    );
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [ids.join(","), ready]);
+  return active;
+}
+
 /* ============ page ============ */
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [opened, setOpened] = useState(false);
   const [guest, setGuest] = useState("Tamu Undangan");
   const [music, setMusic] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
+  const activeSection = useActiveSection(SECTION_IDS, opened);
   const [rsvp, setRsvp] = useState({ name: "", attendance: "Hadir", count: "1", message: "" });
   const [sent, setSent] = useState(false);
   const [guestbook, setGuestbook] = useState<{ name: string; message: string }[]>([]);
@@ -396,34 +426,18 @@ export default function Home() {
         <>
           {/* header */}
           <header className="sticky top-0 z-40 bg-[#fff8ec]/90 backdrop-blur-lg border-b border-[#f0c66c]/40 text-[#233025]">
-            <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+            <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
               <a href="#home" className="font-display text-lg tracking-wide text-[#2a5c48]">Faariz <span className="font-accent italic text-[#c17e2a]">Al-khowarizmi</span></a>
-              <nav className="hidden md:flex items-center gap-7 text-[11px] tracking-widest uppercase text-[#6b5a3e] font-bold">
-                <a href="#kisah" className="hover:text-[#2a5c48] transition-colors">Tentang</a>
-                <a href="#acara" className="hover:text-[#2a5c48] transition-colors">Acara</a>
-                <a href="#galeri" className="hover:text-[#2a5c48] transition-colors">Galeri</a>
-                <a href="#rsvp" className="hover:text-[#2a5c48] transition-colors">RSVP</a>
-              </nav>
-              <div className="flex items-center gap-3">
-                <button
-                  aria-label="Musik"
-                  onClick={() => setMusic((m) => !m)}
-                  className={`p-2.5 rounded-full border transition-colors ${music ? "border-[#e0a94e] bg-[#e0a94e]/15 text-[#e0a94e]" : "border-[#e6dcc2] text-[#6b5a3e] hover:border-[#e0a94e]/60"}`}
-                >
-                  {music ? <Volume2 size={16} /> : <VolumeX size={16} />}
-                </button>
-                <button aria-label="Menu" className="md:hidden p-2" onClick={() => setMobileMenu((v) => !v)}>
-                  {mobileMenu ? <X size={20} /> : <Menu size={20} />}
-                </button>
-              </div>
+              <button
+                aria-label="Musik"
+                aria-pressed={music}
+                onClick={() => setMusic((m) => !m)}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 border text-[10px] font-bold uppercase tracking-widest transition-colors ${music ? "border-[#e0a94e] bg-[#e0a94e]/15 text-[#c17e2a]" : "border-[#e6dcc2] text-[#6b5a3e] hover:border-[#e0a94e]/60"}`}
+              >
+                {music ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                Musik
+              </button>
             </div>
-            {mobileMenu && (
-              <div className="md:hidden px-5 pb-4 flex flex-col gap-3 text-sm">
-                {[["#kisah", "Tentang"], ["#acara", "Acara"], ["#galeri", "Galeri"], ["#rsvp", "RSVP"]].map(([href, label]) => (
-                  <a key={href} href={href} onClick={() => setMobileMenu(false)} className="hover:text-[#2a5c48] transition-colors">{label}</a>
-                ))}
-              </div>
-            )}
           </header>
 
           {/* hero setelah buka */}
@@ -650,7 +664,7 @@ export default function Home() {
           </motion.section>
 
           {/* footer */}
-          <footer className="px-5 py-10 text-center relative overflow-hidden bg-[#2a5c48] text-[#f6f1e2]">
+          <footer className="px-5 pt-10 pb-28 text-center relative overflow-hidden bg-[#2a5c48] text-[#f6f1e2]">
             <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-[#f6c66c]/20 blur-3xl pointer-events-none" />
             <div className="relative">
               <p className="font-arabic text-sm text-[#f0c66c]/90 mb-2">{BISMILLAH}</p>
@@ -660,16 +674,39 @@ export default function Home() {
             </div>
           </footer>
 
-          {/* music toggle */}
-          <motion.button
-            onClick={() => setMusic((m) => !m)}
-            className="fixed bottom-5 right-5 z-30 rounded-full p-4 shadow-2xl shadow-[#e0a94e]/50 bg-gradient-to-br from-[#f6c66c] to-[#e0a94e] text-[#3a250c]"
-            whileHover={{ scale: 1.12, rotate: 8 }}
-            whileTap={{ scale: 0.92 }}
-            aria-label="Toggle music"
+          {/* bottom nav (Android-style) */}
+          <motion.nav
+            initial={{ y: 92, x: "-50%", opacity: 0 }}
+            animate={{ y: 0, x: "-50%", opacity: 1 }}
+            transition={{ delay: 0.45, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed left-1/2 z-50 w-[92%] max-w-sm"
+            style={{ bottom: "max(1rem, env(safe-area-inset-bottom))" }}
+            aria-label="Navigasi utama"
           >
-            {music ? <Music2 size={20} className="animate-float-slow" /> : <VolumeX size={20} />}
-          </motion.button>
+            <div className="flex items-center justify-between gap-0.5 rounded-3xl border border-[#f0c66c]/60 bg-[#fff8ec]/90 backdrop-blur-xl px-1.5 py-1.5 shadow-[0_18px_45px_-15px_rgba(58,42,14,0.4)]">
+              {NAV_ITEMS.map(({ id, label, Icon }) => {
+                const isActive = activeSection === id;
+                return (
+                  <a
+                    key={id}
+                    href={`#${id}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`relative flex-1 flex flex-col items-center gap-1 rounded-2xl px-1 py-2 text-[9px] font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? "text-[#3a250c]" : "text-[#6b5a3e] hover:text-[#2a5c48]"}`}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="bottom-nav-pill"
+                        className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#f6c66c] to-[#e0a94e] shadow-md shadow-[#e0a94e]/40"
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <Icon size={18} className="relative z-10" />
+                    <span className="relative z-10">{label}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </motion.nav>
         </>
       )}
     </main>
