@@ -13,8 +13,8 @@ Edit `app/page.tsx`:
 - `Muhammad Raihan`: nama anak.
 - `Bapak Ahmad & Ibu Siti`: nama orang tua.
 - Tanggal, waktu, alamat, dan URL Google Maps.
-- Array `photos`: ganti URL foto contoh dengan foto keluarga.
-- Tambahkan file musik bebas lisensi milik Anda di `public/audio/backsound.mp3`.
+- Array `photos`: ganti gambar galeri di `public/images/` dengan foto keluarga.
+- Kalau ingin musik latar yang berbeda, ganti file `public/audio/backsound.wav` dengan arsip yang bebas lisensi-nya milik Anda.
 
 ## Nama tamu otomatis
 Bagikan tautan dengan parameter:
@@ -31,6 +31,3 @@ Catatan: schema SQL di atas adalah baseline demo. Untuk produksi, tambahkan rate
 
 ## Admin
 Halaman `/admin` adalah prototipe dashboard untuk daftar RSVP dan ekspor CSV. Password demo `demo123` hanya untuk preview; jangan gunakan untuk deployment publik. Ganti dengan autentikasi Supabase Auth dan pemeriksaan role di server sebelum produksi.
-
-## Catatan aset
-Foto pada galeri merupakan foto placeholder dari Unsplash. Ganti dengan aset yang memiliki izin penggunaan. Musik tidak disertakan; letakkan audio milik sendiri atau berlisensi di `public/audio/backsound.mp3`.
