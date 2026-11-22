@@ -40,8 +40,6 @@ function dustParticles(count: number) {
     delay: seeded(i + 401) * 4,
   }));
 }
-const PARTICLES = dustParticles(16);
-
 const fadeUp = {
   hidden: { opacity: 0, y: 42 },
   show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const } },
@@ -198,12 +196,6 @@ function Countdown() {
     const t = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
-  const cells = (label: string, value: string) => (
-    <div key={label} className="soft-panel py-4 text-center min-w-0">
-      <div className="font-display text-2xl sm:text-3xl text-[#233025]">{value}</div>
-      <div className="mt-1 text-[9px] uppercase tracking-[.18em] text-[#a5823f] font-bold">{label}</div>
-    </div>
-  );
   if (now === null) {
     return (
       <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-xl mx-auto">
@@ -282,6 +274,7 @@ export default function Home() {
   const activeSection = useActiveSection(SECTION_IDS, opened);
   const [rsvp, setRsvp] = useState({ name: "", attendance: "Hadir", count: "1", message: "" });
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
   const [guestbook, setGuestbook] = useState<{ name: string; message: string }[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -317,11 +310,12 @@ export default function Home() {
   async function submitRSVP(e: React.FormEvent) {
     e.preventDefault();
     if (!rsvp.name.trim()) return;
+    setError("");
     if (supabase) {
       const { error } = await supabase.from("rsvps").insert([
         { name: rsvp.name, attendance: rsvp.attendance, guest_count: Number(rsvp.count), message: rsvp.message },
       ]);
-      if (error) { alert("Belum berhasil mengirim. Silakan coba lagi."); return; }
+      if (error) { setError("Belum berhasil mengirim. Silakan coba lagi."); return; }
     }
     setGuestbook((prev) => [{ name: rsvp.name, message: rsvp.message || "Semoga acaranya berkah." }, ...prev]);
     setSent(true);
@@ -377,7 +371,7 @@ export default function Home() {
                   className="absolute overflow-hidden"
                   style={{ left: "17%", right: "17%", top: "2.5%", bottom: "5.6%", borderRadius: "70px 70px 0 0" }}
                 >
-                  <img src={HERO_PHOTO} alt="Ananda Faariz" className="h-full w-full object-cover object-[50%_18%]" />
+                  <img src={HERO_PHOTO} alt="Ananda Faariz" loading="eager" fetchPriority="high" className="h-full w-full object-cover object-[50%_18%]" />
                 </div>
               </motion.div>
 
@@ -455,7 +449,7 @@ export default function Home() {
                   className="absolute overflow-hidden"
                   style={{ left: "17%", right: "17%", top: "2.5%", bottom: "5.6%", borderRadius: "47px 47px 0 0" }}
                 >
-                  <img src={HERO_PHOTO} alt="Ananda Faariz" className="h-full w-full object-cover object-[50%_18%]" />
+                  <img src={HERO_PHOTO} alt="Ananda Faariz" loading="eager" fetchPriority="high" className="h-full w-full object-cover object-[50%_18%]" />
                 </div>
               </motion.div>
 
@@ -619,6 +613,7 @@ export default function Home() {
                       <button className="btn-gold w-full rounded-full py-3.5 text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2">
                         <Send size={14} /> Kirim Konfirmasi
                       </button>
+                      {error && <p role="alert" className="text-[11px] text-red-700 mt-3 font-semibold">{error}</p>}
                       {!supabase && <p className="text-[10px] text-amber-700 mt-3">Mode demo: data tampil sementara di halaman ini. Hubungkan Supabase agar tersimpan permanen.</p>}
                     </>
                   )}
